@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VinylWebApp1.Models;
@@ -9,9 +10,10 @@ using VinylWebApp1.Models;
 namespace VinylWebApp1.Migrations
 {
     [DbContext(typeof(VinylContext))]
-    partial class VinylContextModelSnapshot : ModelSnapshot
+    [Migration("20210910220835_required_removed")]
+    partial class required_removed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -11,22 +11,22 @@ using VinylWebApp1.Models;
 namespace VinylWebApp1.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class VinylsController : Controller
+    public class DeliveryTypesController : Controller
     {
         private readonly VinylContext _context;
 
-        public VinylsController(VinylContext context)
+        public DeliveryTypesController(VinylContext context)
         {
             _context = context;
         }
 
-        // GET: Vinyls
+        // GET: DeliveryTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Vinyls.ToListAsync());
+            return View(await _context.DeliveryTypes.ToListAsync());
         }
 
-        // GET: Vinyls/Details/5
+        // GET: DeliveryTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +34,39 @@ namespace VinylWebApp1.Controllers
                 return NotFound();
             }
 
-            var vinyl = await _context.Vinyls
+            var deliveryType = await _context.DeliveryTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (vinyl == null)
+            if (deliveryType == null)
             {
                 return NotFound();
             }
 
-            return View(vinyl);
+            return View(deliveryType);
         }
 
-        // GET: Vinyls/Create
+        // GET: DeliveryTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Vinyls/Create
+        // POST: DeliveryTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Photo,Category,Year")] Vinyl vinyl)
+        public async Task<IActionResult> Create([Bind("Id,Name,Days,Price")] DeliveryType deliveryType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vinyl);
+                _context.Add(deliveryType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(vinyl);
+            return View(deliveryType);
         }
 
-        // GET: Vinyls/Edit/5
+        // GET: DeliveryTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace VinylWebApp1.Controllers
                 return NotFound();
             }
 
-            var vinyl = await _context.Vinyls.FindAsync(id);
-            if (vinyl == null)
+            var deliveryType = await _context.DeliveryTypes.FindAsync(id);
+            if (deliveryType == null)
             {
                 return NotFound();
             }
-            return View(vinyl);
+            return View(deliveryType);
         }
 
-        // POST: Vinyls/Edit/5
+        // POST: DeliveryTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Photo,Category,Year")] Vinyl vinyl)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Days,Price")] DeliveryType deliveryType)
         {
-            if (id != vinyl.Id)
+            if (id != deliveryType.Id)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace VinylWebApp1.Controllers
             {
                 try
                 {
-                    _context.Update(vinyl);
+                    _context.Update(deliveryType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VinylExists(vinyl.Id))
+                    if (!DeliveryTypeExists(deliveryType.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +114,10 @@ namespace VinylWebApp1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vinyl);
+            return View(deliveryType);
         }
 
-        // GET: Vinyls/Delete/5
+        // GET: DeliveryTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,30 +125,30 @@ namespace VinylWebApp1.Controllers
                 return NotFound();
             }
 
-            var vinyl = await _context.Vinyls
+            var deliveryType = await _context.DeliveryTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (vinyl == null)
+            if (deliveryType == null)
             {
                 return NotFound();
             }
 
-            return View(vinyl);
+            return View(deliveryType);
         }
 
-        // POST: Vinyls/Delete/5
+        // POST: DeliveryTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vinyl = await _context.Vinyls.FindAsync(id);
-            _context.Vinyls.Remove(vinyl);
+            var deliveryType = await _context.DeliveryTypes.FindAsync(id);
+            _context.DeliveryTypes.Remove(deliveryType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VinylExists(int id)
+        private bool DeliveryTypeExists(int id)
         {
-            return _context.Vinyls.Any(e => e.Id == id);
+            return _context.DeliveryTypes.Any(e => e.Id == id);
         }
     }
 }
