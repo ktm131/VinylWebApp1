@@ -11,10 +11,13 @@ namespace VinylWebApp1.Models
     {
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
+        [Display(Name = "Czas oczekiwania(dni)")]
         public int Days { get; set; }
         [Range(0,double.MaxValue)]
         [Column(TypeName = "decimal(18,2)")]
+        [Display(Name = "Cena")]
         public decimal Price { get; set; }
 
         public ICollection<VinylReservation> VinylReservations { get; set; }

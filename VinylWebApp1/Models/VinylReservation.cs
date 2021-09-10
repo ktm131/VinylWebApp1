@@ -11,12 +11,18 @@ namespace VinylWebApp1.Models
     {
         public int Id { get; set; }
         [Range(0, int.MaxValue)]
+        [Display(Name = "Płyta")]
         public int VinylId { get; set; }
+        [Display(Name = "Użytkownik")]
         public string UserId { get; set; }
         [Range(0,int.MaxValue)]
+        [Display(Name = "Rodzaj dostawy")]
         public int DeliveryTypeId { get; set; }
+        [Display(Name = "Data rezerwacji")]
         public DateTime ReservationDate { get; set; }
+        [Display(Name = "Data zwrotu")]
         public DateTime ReturnDate { get; set; }
+        [Display(Name = "Status")]
         public Status Status { get; set; }
 
         public Vinyl Vinyl { get; set; }
@@ -28,9 +34,13 @@ namespace VinylWebApp1.Models
 
     public enum Status
     {
+        [Display(Name = "Zarezerwowano")]
         Reserved,
+        [Display(Name = "Wysłano")]
         Sent,
+        [Display(Name = "Zwrócono")]
         Returned,
+        [Display(Name = "Anulowano")]
         Cancelled
     }
 

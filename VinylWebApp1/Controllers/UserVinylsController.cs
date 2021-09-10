@@ -60,15 +60,15 @@ namespace VinylWebApp1.Controllers
             return View(reservations);
         }
 
-        public async Task<IActionResult> Reserve(int vinylId)
+        public async Task<IActionResult> Reserve(int id)
         {
             ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Name");
-            return View(new VinylReservation() { VinylId = vinylId });
+            return View(new VinylReservation() { VinylId = id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reserve([Bind("Vinyld,DeliveryTypeId")] VinylReservation vinylReservation)
+        public async Task<IActionResult> Reserve([Bind("VinylId,DeliveryTypeId")] VinylReservation vinylReservation)
         {
             if (ModelState.IsValid)
             {

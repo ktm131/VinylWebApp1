@@ -62,14 +62,6 @@ namespace VinylWebApp1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,VinylId,UserId,DeliveryTypeId,ReservationDate,ReturnDate,Status")] VinylReservation vinylReservation)
         {
-            if (vinylReservation != null)
-            {
-                if (vinylReservation.ReservationDate > vinylReservation.ReturnDate)
-                {
-                    ModelState.AddModelError("ReservationDate", "Data wypożyczenia jest późniejsza od daty zwrotu");
-                }
-            }
-
             if (ModelState.IsValid)
             {
                 _context.Add(vinylReservation);
@@ -109,14 +101,6 @@ namespace VinylWebApp1.Controllers
             if (id != vinylReservation.Id)
             {
                 return NotFound();
-            }
-
-            if (vinylReservation != null)
-            {
-                if (vinylReservation.ReservationDate > vinylReservation.ReturnDate)
-                {
-                    ModelState.AddModelError("ReservationDate", "Data wypożyczenia jest późniejsza od daty zwrotu");
-                }
             }
 
             if (ModelState.IsValid)

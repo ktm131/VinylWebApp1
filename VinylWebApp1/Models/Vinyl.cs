@@ -12,10 +12,14 @@ namespace VinylWebApp1.Models
         [Display(Name = "Nazwa")]
         [Required]
         public string Name { get; set; }
+        [Display(Name = "Opis")]
         public string Description { get; set; }
+        [Display(Name = "Zdjęcie")]
         public string Photo { get; set; }
+        [Display(Name = "Kategoria")]
         public string Category  { get; set; }
         [Range(1887,2021)]
+        [Display(Name = "Rok")]
         public int Year { get; set; }
 
         public ICollection<VinylReservation> VinylReservations { get; set; }
