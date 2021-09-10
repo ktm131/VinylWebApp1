@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VinylWebApp1.Areas.Identity.Models;
 using VinylWebApp1.Data;
+using VinylWebApp1.Models;
 
 namespace VinylWebApp1
 {
@@ -30,14 +32,23 @@ namespace VinylWebApp1
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddDbContext<VinylContext>(options => 
+                options.UseNpgsql(Configuration.GetConnectionString("VinylConnection")));
+
+            services.AddDefaultIdentity<ApplicationUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +76,50 @@ namespace VinylWebApp1
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            CreateRoles(serviceProvider);
+        }
+
+        private void CreateRoles(IServiceProvider serviceProvider)
+        {
+
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            Task<IdentityResult> roleResult;
+            string email = "admin@admin.com";
+
+            //Check that there is an Administrator role and create if not
+            Task<bool> hasAdminRole = roleManager.RoleExistsAsync("Administrator");
+            hasAdminRole.Wait();
+
+            if (!hasAdminRole.Result)
+            {
+                roleResult = roleManager.CreateAsync(new IdentityRole("Administrator"));
+                roleResult.Wait();
+            }
+
+            //Check if the admin user exists and create it if not
+            //Add to the Administrator role
+
+            Task<ApplicationUser> testUser = userManager.FindByEmailAsync(email);
+            testUser.Wait();
+
+            if (testUser.Result == null)
+            {
+                ApplicationUser administrator = new ApplicationUser();
+                administrator.Email = email;
+                administrator.UserName = email;
+
+                Task<IdentityResult> newUser = userManager.CreateAsync(administrator, "Admin2137.");
+                newUser.Wait();
+
+                if (newUser.Result.Succeeded)
+                {
+                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(administrator, "Administrator");
+                    newUserRole.Wait();
+                }
+            }
+
         }
     }
 }
