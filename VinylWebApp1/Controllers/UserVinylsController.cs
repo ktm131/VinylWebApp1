@@ -29,7 +29,7 @@ namespace VinylWebApp1.Controllers
         {
             var vinyls = await _context.Vinyls
                 .Include(i => i.VinylReservations)
-                .Where(w=>!w.VinylReservations.Any(a=>a.ReservationDate <= DateTime.Now && DateTime.Now <= a.ReturnDate))
+                .Where(w=>!w.VinylReservations.Any(a=>a.ReservationDate <= DateTime.Now && (a.ReturnDate == DateTime.MinValue || DateTime.Now < a.ReturnDate) && (a.Status == Status.Reserved || a.Status == Status.Sent)))
                 .ToListAsync();
 
             return View(vinyls);
@@ -68,7 +68,7 @@ namespace VinylWebApp1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reserve([Bind("VinylId,DeliveryTypeId")] VinylReservation vinylReservation)
+        public async Task<IActionResult> Reserve([Bind("VinylId,DeliveryTypeId,Return,Payment")] VinylReservation vinylReservation)
         {
             if (ModelState.IsValid)
             {

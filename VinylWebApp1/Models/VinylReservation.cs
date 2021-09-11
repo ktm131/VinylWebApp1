@@ -24,8 +24,14 @@ namespace VinylWebApp1.Models
         public DateTime ReturnDate { get; set; }
         [Display(Name = "Status")]
         public Status Status { get; set; }
+        [Display(Name = "Zwrot")]
+        public Return Return { get; set; }
+        [Display(Name = "Płatność")]
+        public Payment Payment { get; set; }
 
+        [Display(Name = "Płyta")]
         public Vinyl Vinyl { get; set; }
+        [Display(Name = "Rodzaj dostawy")]
         public DeliveryType DeliveryType { get; set; }
         
         [NotMapped]
@@ -42,6 +48,22 @@ namespace VinylWebApp1.Models
         Returned,
         [Display(Name = "Anulowano")]
         Cancelled
+    }
+
+    public enum Return
+    {
+        [Display(Name = "Osobisty")]
+        Own,
+        [Display(Name = "Kurier")]
+        Courier,
+    }
+
+    public enum Payment
+    {
+        [Display(Name = "Na miejscu")]
+        Place,
+        [Display(Name = "Online")]
+        Online,
     }
 
 }
