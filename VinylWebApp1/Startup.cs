@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using VinylWebApp1.Areas.Identity.Models;
@@ -78,6 +79,10 @@ namespace VinylWebApp1
             });
 
             CreateRoles(serviceProvider);
+
+            var cultureInfo = new CultureInfo("pl-PL");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
 
         private void CreateRoles(IServiceProvider serviceProvider)
