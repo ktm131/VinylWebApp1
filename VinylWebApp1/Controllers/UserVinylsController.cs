@@ -27,6 +27,7 @@ namespace VinylWebApp1.Controllers
         // GET: Vinyls1
         public async Task<IActionResult> Index()
         {
+
             var vinyls = await _context.Vinyls
                 .Include(i => i.VinylReservations)
                 .Where(w=>!w.VinylReservations.Any(a=>a.ReservationDate <= DateTime.Now && (a.ReturnDate == DateTime.MinValue || DateTime.Now < a.ReturnDate) && (a.Status == Status.Reserved || a.Status == Status.Sent)))
@@ -56,7 +57,12 @@ namespace VinylWebApp1.Controllers
         public async Task<IActionResult> Reservations()
         {
             var user = await _userManager.GetUserAsync(User);
-            var reservations = await _context.Reservations.Where(w=>w.UserId == user.Id).ToListAsync();
+
+            var reservations = await _context.Reservations.Where(w => w.UserId == user.Id)
+                .Include(i => i.Vinyl)
+                .Include(i => i.DeliveryType)
+                .ToListAsync();
+
             return View(reservations);
         }
 
