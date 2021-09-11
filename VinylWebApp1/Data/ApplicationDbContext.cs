@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VinylWebApp1.Areas.Identity.Models;
+using VinylWebApp1.Models;
 
 namespace VinylWebApp1.Data
 {
